@@ -19,9 +19,15 @@
 		},
 		{
 			"ami": "ami-97a033ed",
-			"blenderVersion": "2.79 Kiska P3 GPU minimal (preferred)",
+			"blenderVersion": "2.79 Kiska P3 GPU minimal",
+			"region": "us-east-1"
+		},
+		{
+			"ami": "ami-b3bf79ce",
+			"blenderVersion": "2.79 Kiska P3 GPU new displacement (preferred)",
 			"region": "us-east-1"
 		}
+		
 		
 	]
 }
