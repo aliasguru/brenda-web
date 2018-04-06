@@ -14,7 +14,7 @@
 			"region": "us-west-2"
 		},
 		{
-			"ami": "ami-99cc65e4",
+			"ami": "ami-d2a70eaf",
 			"blenderVersion": "2.79 Kiska P3 GPU new displacement (preferred)",
 			"region": "us-east-1"
 		}
