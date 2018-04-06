@@ -12,18 +12,9 @@
 			"ami": "ami-f68d4d8e",
 			"blenderVersion": "2.78",
 			"region": "us-west-2"
-		},{
-			"ami": "ami-b1bf2ccb",
-			"blenderVersion": "2.79 Kiska CPU full",
-			"region": "us-east-1"
 		},
 		{
-			"ami": "ami-97a033ed",
-			"blenderVersion": "2.79 Kiska P3 GPU minimal",
-			"region": "us-east-1"
-		},
-		{
-			"ami": "ami-3357914e",
+			"ami": "ami-99cc65e4",
 			"blenderVersion": "2.79 Kiska P3 GPU new displacement (preferred)",
 			"region": "us-east-1"
 		}
