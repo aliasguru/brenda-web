@@ -16,10 +16,13 @@ lumpy_data = [v for k, v in raw_data["products"].items()]
 data = []
 
 for ld in lumpy_data:
-    i = {k: v for k,v in ld["attributes"].items()}
-    i["sku"] = ld["sku"]
-    i["productFamily"] = ld["productFamily"]
-    data.append(i)
+	try:
+	    i = {k: v for k,v in ld["attributes"].items()}
+	    i["sku"] = ld["sku"]
+	    i["productFamily"] = ld["productFamily"]
+	    data.append(i)
+	except:
+		pass
 
 df = pd.DataFrame(data)
 
