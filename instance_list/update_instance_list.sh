@@ -9,7 +9,7 @@ sudo apt install pandas
 
 if [ $download = "y" ]; then
     rm index.json
-    wget https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonEC2/current/index.json .
+    wget https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonEC2/current/index.json
 else
     echo skipping download
 fi
