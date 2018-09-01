@@ -1,12 +1,12 @@
-# Download https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonEC2/current/index.json to local directory as index.json
+#    Download https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonEC2/current/index.json to local directory as index.json
 #
-# Install pandas
+#    Install pandas
 
 import json
 import pandas as pd
 
 __output_file__ = '../app/instances.json'
-__min_number_of_cores__ = 18
+__min_number_of_cores__ = 8
 
 f = open("index.json", "r")
 
@@ -17,7 +17,7 @@ data = []
 
 for ld in lumpy_data:
 	try:
-	    i = {k: v for k,v in ld["attributes"].items()}
+	    i = {k: v for k, v in ld["attributes"].items()}
 	    i["sku"] = ld["sku"]
 	    i["productFamily"] = ld["productFamily"]
 	    data.append(i)
@@ -26,10 +26,10 @@ for ld in lumpy_data:
 
 df = pd.DataFrame(data)
 
-#[nan, u'AWS GovCloud (US)', u'Asia Pacific (Mumbai)', u'Asia Pacific (Seoul)', u'Asia Pacific (Singapore)',
-# u'Asia Pacific (Sydney)', u'Asia Pacific (Tokyo)', u'Canada (Central)', u'EU (Frankfurt)', u'EU (Ireland)',
-# u'EU (London)', u'South America (Sao Paulo)', u'US East (N. Virginia)', u'US East (Ohio)',
-# u'US West (N. California)', u'US West (Oregon)']
+#    [nan, u'AWS GovCloud (US)', u'Asia Pacific (Mumbai)', u'Asia Pacific (Seoul)', u'Asia Pacific (Singapore)',
+#    u'Asia Pacific (Sydney)', u'Asia Pacific (Tokyo)', u'Canada (Central)', u'EU (Frankfurt)', u'EU (Ireland)',
+#    u'EU (London)', u'South America (Sao Paulo)', u'US East (N. Virginia)', u'US East (Ohio)',
+#    u'US West (N. California)', u'US West (Oregon)']
 
 df["location"] = df["location"].map({
     "US East (Ohio)": "us-east-2", "US East (N. Virginia)": "us-east-1", "US West (N. California)": "us-west-1",
@@ -38,11 +38,11 @@ df["location"] = df["location"].map({
     "Asia Pacific (Tokyo)": "ap-northeast-1", "Canada (Central)": "ca-central-1", "EU (Frankfurt)": "eu-central-1",
     "EU (Ireland)": "eu-west-1", "EU (London)": "eu-west-2", "South America (Sao Paulo)": "sa-east-1"})
 
-_instanceData = df[(df["operatingSystem"] == "Linux") 
-				& (df["location"].notnull()) 
-				& (df["productFamily"] == "Compute Instance") 
+_instanceData = df[(df["operatingSystem"] == "Linux")
+				& (df["location"].notnull())
+				& (df["productFamily"] == "Compute Instance")
 				& (df['vcpu'].astype(float) >= __min_number_of_cores__)][["location", "instanceType"]].\
-			drop_duplicates().to_json(orient="records")
+			drop_duplicates().to_json(orient = "records")
 
 try:
 	_t = open(__output_file__, 'w')
