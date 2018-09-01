@@ -6,7 +6,7 @@ import json
 import pandas as pd
 
 __output_file__ = '../app/instances.json'
-__min_number_of_cores__ = 8
+__min_number_of_cores__ = 16
 
 f = open("index.json", "r")
 
