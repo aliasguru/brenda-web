@@ -1,13 +1,13 @@
 {
 	"amis": [
 		{
-			"ami": "ami-5c41a726",
-			"blenderVersion": "2.79",
+			"ami": "ami-0cc953e8e243618c8",
+			"blenderVersion": "2.79b with GPU support",
 			"region": "us-east-1"
 		},
 		{
-			"ami": "ami-06496789a8d7ac8bf",
-			"blenderVersion": "2.79b Kiska P3 GPU (preferred)",
+			"ami": "ami-05338684b7b21e3fa",
+			"blenderVersion": "2.80 Beta with GPU support",
 			"region": "us-east-1"
 		}
 	]
