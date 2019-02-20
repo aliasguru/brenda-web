@@ -6,7 +6,9 @@ tmp
 .DS_Store
 .idea
 .tern-project
+.project
 /npm-debug.log
+/package.json
 /package-lock.json
 
 # ignore folders
