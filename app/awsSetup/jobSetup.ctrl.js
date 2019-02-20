@@ -58,7 +58,7 @@ angular.module('awsSetup')
         $scope.scene = 'Scene';
         $scope.inlineScript = 'bpy.ops.render.set_sampling(scene=\'ALL\', device=\'GPU\', samples=$SAMPLES, ' + 
     	'percentage=100, branched=False, clamping=True, max_bounces=8, transparent_max_bounces=6,' + 
-    	'use_all_resources=False, cpu_tile_size=32)';
+    	'cpu_tile_size=32)';
         
         $scope.blenderBuilds = [
         	{value: 'currentDev', label:'Current Dev (use this for GPU rendering!)'},
