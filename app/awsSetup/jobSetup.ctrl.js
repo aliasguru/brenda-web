@@ -145,12 +145,6 @@ angular.module('awsSetup')
 		}
 	};
 
-	$scope.overrideSamples = function() {
-		if	($scope.isSamplingOverride == false) {
-			$scope.workList();
-		}
-	}
-
     $scope.multiframeRenderChanged = function() {
 		$scope.isSubframeRender = false;
         $scope.workTemplate = $scope.workTemplateFullframe;
