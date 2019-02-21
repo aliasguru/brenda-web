@@ -55,7 +55,14 @@
 				</span>
 				<input type="text" class="form-control" id="workTemplate" ng-model="workTemplate" />
 			</div>
-			<label for="inlineScript">Python Script to execute for each frame</label>
+			<label for="gpuScript">GPU options</label>
+			<div class="input-group">
+				<span class="input-group-btn">
+					<button class="btn btn-default" type="button" brenda-help="awsSetup/help/scriptHelp.html"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></button>
+				</span>
+				<input type="text" class="form-control" id="gpuScript" ng-model="gpuScript" />
+			</div>
+			<label for="inlineScript">Sampling and bounce settings</label>
 			<div class="input-group">
 				<span class="input-group-btn">
 					<button class="btn btn-default" type="button" brenda-help="awsSetup/help/scriptHelp.html"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></button>
