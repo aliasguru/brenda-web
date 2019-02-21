@@ -62,6 +62,12 @@
 				</span>
 				<input type="text" class="form-control" id="gpuScript" ng-model="gpuScript" />
 			</div>
+			<div class="input-group">
+					<label>Device</label>
+					<select class="form-control" ng-model="renderDevice">
+						<option ng-repeat="device in renderDevices" value="{{device.value}}">{{device.label}}</option>
+					</select>
+			</div>			
 			<div class="checkbox">
 				<label>
 					<input type="checkbox" ng-model="isSamplingOverride" ng-change="overrideSamples()"> Override Samples
@@ -86,17 +92,16 @@
 		
 		<div class="form-inline">
 			<div class="input-group">
+				<label for="sceneToRender">scene to render</label>
+				<input type="text" class="form-control" id="sceneToRender" ng-model="scene" />
+			</div>
+			<div class="input-group">
 				<label for="startFrame">Start Frame</label>
 				<input type="number" name="startFrame" class="form-control" id="startFrame" ng-model="startFrame" required min="0" max="{{endFrame}}" />
 			</div>
-			
 			<div class="input-group">
 				<label for="endFrame">End Frame</label>
 				<input type="number" name="endFrame" class="form-control" id="endFrame" ng-model="endFrame" required min="{{startFrame}}" />
-			</div>
-			<div class="input-group">
-				<label for="sceneToRender">scene to render</label>
-				<input type="text" class="form-control" id="sceneToRender" ng-model="scene" />
 			</div>
 			<div class="input-group">
 				<label>Output File Format</label>

@@ -57,7 +57,7 @@ angular.module('awsSetup')
         $scope.endFrame = 9;
         
 		$scope.scene = 'Scene';
-		$scope.gpuScript = 'bpy.ops.render.set_gpu(device=\'GPU\',use_all_resources=True)'
+		$scope.gpuScript = 'bpy.ops.render.set_gpu(device=\'$DEVICE\',use_all_resources=True, cpu_tile_size=32)'
         $scope.inlineScript = 'bpy.ops.render.set_sampling(scene=\'ALL\', samples=$SAMPLES, ' + 
     	'percentage=100, branched=False, clamping=True, max_bounces=8, transparent_max_bounces=6)';
         
@@ -65,8 +65,14 @@ angular.module('awsSetup')
         	{value: 'currentDev', label:'Current Dev (use this for GPU rendering!)'},
         	{value: 'blender', label:'Blender Default (currently 2.79)'}
         ];
-        
+
+		$scope.renderDevices = [
+        	{value: 'GPU', label:'Render on GPUs if available'},
+        	{value: 'CPU', label:'Render on CPUs in any case'}
+        ];
+
         $scope.blenderBuild = $scope.blenderBuilds[0].value; //Default to CurrentDev
+        $scope.renderDevice = $scope.renderDevices[0].value; //Default to GPU
 
         $scope.outputFileFormats = [
         	{value: 'MULTILAYER', label:'OpenEXR Multilayer'},
@@ -176,9 +182,10 @@ angular.module('awsSetup')
 		for (var i = parseInt($scope.startFrame, 10); i <= parseInt($scope.endFrame, 10); i=i+multiframeSteps) {
             var parsedSubframeX = parseInt($scope.subframeModel.subframesX, 10);
             var parsedSubframeY = parseInt($scope.subframeModel.subframesY, 10);
-            var inlineScript = $scope.inlineScript.replace("$SAMPLES", $scope.sampleCount);
+			var inlineScript = $scope.inlineScript.replace("$SAMPLES", $scope.sampleCount);
+			var gpuScript = $scope.gpuScript.replace("$DEVICE", $scope.renderDevice);
             if ($scope.isSubframeRender && (parsedSubframeX > 1 || parsedSubframeY > 1)) {
-                var blenderCmd = $scope.workTemplate.replace("$BLENDERVERSION", $scope.blenderBuild).replace("$GPUSCRIPT", $scope.gpuScript).replace("$SCRIPT", $scope.subframeScript).replace("$OFILEFORMAT", $scope.outputFileFormat).replace("$START", i).replace("$END", i).replace("$STEP", 1).replace("$INLINESCRIPT", inlineScript).split('$SCENE').join($scope.scene);
+                var blenderCmd = $scope.workTemplate.replace("$BLENDERVERSION", $scope.blenderBuild).replace("$GPUSCRIPT", gpuScript).replace("$SCRIPT", $scope.subframeScript).replace("$OFILEFORMAT", $scope.outputFileFormat).replace("$START", i).replace("$END", i).replace("$STEP", 1).replace("$INLINESCRIPT", inlineScript).split('$SCENE').join($scope.scene);
                 addSubframeTasksToList(parsedSubframeX, parsedSubframeY, blenderCmd, list);
             } else {
             	var endFrame = i+multiframeSteps-1;
@@ -191,7 +198,7 @@ angular.module('awsSetup')
 				} else {
 					cmd = $scope.workTemplate.replace("$INLINESCRIPT", "");
 				}
-                cmd = cmd.replace("$BLENDERVERSION", $scope.blenderBuild).replace("$GPUSCRIPT", $scope.gpuScript).replace("$OFILEFORMAT", $scope.outputFileFormat).replace("$START", i).replace("$END", endFrame).replace("$STEP", 1).split('$SCENE').join($scope.scene);
+                cmd = cmd.replace("$BLENDERVERSION", $scope.blenderBuild).replace("$GPUSCRIPT", gpuScript).replace("$OFILEFORMAT", $scope.outputFileFormat).replace("$START", i).replace("$END", endFrame).replace("$STEP", 1).split('$SCENE').join($scope.scene);
                 list.push(cmd);
             }
         }
