@@ -55,19 +55,28 @@
 				</span>
 				<input type="text" class="form-control" id="workTemplate" ng-model="workTemplate" />
 			</div>
-			<label for="gpuScript">GPU options</label>
-			<div class="input-group">
-				<span class="input-group-btn">
-					<button class="btn btn-default" type="button" brenda-help="awsSetup/help/scriptHelp.html"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></button>
-				</span>
-				<input type="text" class="form-control" id="gpuScript" ng-model="gpuScript" />
+			<div class="form-group">
+				<div class="form-inline">
+					<div class="input-group">
+						<label>Device</label>
+						<select class="form-control" ng-model="renderDevice">
+							<option ng-repeat="device in renderDevices" value="{{device.value}}">{{device.label}}</option>
+						</select>
+					</div>
+					<div class="input-group">
+							<label>Tile Size</label>
+							<select class="form-control" ng-model="tileSize">
+								<option ng-repeat="tile in tileSizes" value="{{tile.value}}">{{tile.label}}</option>
+							</select>
+					</div>
+					<div class="input-group">
+							<label>Use all Resources</label>
+							<select class="form-control" ng-model="useAllResource">
+								<option ng-repeat="res in useAllResources" value="{{res.value}}">{{res.label}}</option>
+							</select>
+					</div>
+				</div>		
 			</div>
-			<div class="input-group">
-					<label>Device</label>
-					<select class="form-control" ng-model="renderDevice">
-						<option ng-repeat="device in renderDevices" value="{{device.value}}">{{device.label}}</option>
-					</select>
-			</div>			
 			<div class="checkbox">
 				<label>
 					<input type="checkbox" ng-model="isSamplingOverride" ng-change="overrideSamples()"> Override Samples

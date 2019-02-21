@@ -57,7 +57,7 @@ angular.module('awsSetup')
         $scope.endFrame = 9;
         
 		$scope.scene = 'Scene';
-		$scope.gpuScript = 'bpy.ops.render.set_gpu(device=\'$DEVICE\',use_all_resources=True, cpu_tile_size=32)'
+		$scope.gpuScript = 'bpy.ops.render.set_gpu(device=\'$DEVICE\',use_all_resources=$USEALLRESOURCES, cpu_tile_size=$TILESIZE)'
         $scope.inlineScript = 'bpy.ops.render.set_sampling(scene=\'ALL\', samples=$SAMPLES, ' + 
     	'percentage=100, branched=False, clamping=True, max_bounces=8, transparent_max_bounces=6)';
         
@@ -71,8 +71,24 @@ angular.module('awsSetup')
         	{value: 'CPU', label:'Render on CPUs in any case'}
         ];
 
+		$scope.useAllResources = [
+        	{value: 'True', label:'Use all power available'},
+        	{value: 'False', label:'Use CPU or GPU, but not both'}
+        ];
+
+		$scope.tileSizes = [
+        	{value: '16', label:'16'},
+        	{value: '32', label:'32'},
+        	{value: '64', label:'64'},
+        	{value: '128', label:'128'},
+        	{value: '256', label:'256'},
+        	{value: '512', label:'512'},
+        ];
+
         $scope.blenderBuild = $scope.blenderBuilds[0].value; //Default to CurrentDev
         $scope.renderDevice = $scope.renderDevices[0].value; //Default to GPU
+        $scope.useAllResource = $scope.useAllResources[0].value; //Default to GPU
+        $scope.tileSize = $scope.tileSizes[1].value; //Default to GPU
 
         $scope.outputFileFormats = [
         	{value: 'MULTILAYER', label:'OpenEXR Multilayer'},
@@ -183,7 +199,7 @@ angular.module('awsSetup')
             var parsedSubframeX = parseInt($scope.subframeModel.subframesX, 10);
             var parsedSubframeY = parseInt($scope.subframeModel.subframesY, 10);
 			var inlineScript = $scope.inlineScript.replace("$SAMPLES", $scope.sampleCount);
-			var gpuScript = $scope.gpuScript.replace("$DEVICE", $scope.renderDevice);
+			var gpuScript = $scope.gpuScript.replace("$DEVICE", $scope.renderDevice).replace("$USEALLRESOURCES", $scope.useAllResource).replace("$TILESIZE", $scope.tileSize);
             if ($scope.isSubframeRender && (parsedSubframeX > 1 || parsedSubframeY > 1)) {
                 var blenderCmd = $scope.workTemplate.replace("$BLENDERVERSION", $scope.blenderBuild).replace("$GPUSCRIPT", gpuScript).replace("$SCRIPT", $scope.subframeScript).replace("$OFILEFORMAT", $scope.outputFileFormat).replace("$START", i).replace("$END", i).replace("$STEP", 1).replace("$INLINESCRIPT", inlineScript).split('$SCENE').join($scope.scene);
                 addSubframeTasksToList(parsedSubframeX, parsedSubframeY, blenderCmd, list);
