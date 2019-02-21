@@ -33,6 +33,8 @@ angular.module('awsSetup')
         $scope.multiframeModel = {};
         $scope.multiframeModel.multiframes = 2;
 
+		$scope.isSamplingOverride = false;
+
         $scope.subframeScriptTemplate = [
             'cat >subframe.py <<EOF\n',
             'import bpy\n',
@@ -143,6 +145,12 @@ angular.module('awsSetup')
 		}
 	};
 
+	$scope.overrideSamples = function() {
+		if	($scope.isSamplingOverride == false) {
+			$scope.workList();
+		}
+	}
+
     $scope.multiframeRenderChanged = function() {
 		$scope.isSubframeRender = false;
         $scope.workTemplate = $scope.workTemplateFullframe;
@@ -183,7 +191,13 @@ angular.module('awsSetup')
             	if (endFrame > $scope.endFrame){
             		endFrame = $scope.endFrame;
 				}
-                var cmd = $scope.workTemplate.replace("$BLENDERVERSION", $scope.blenderBuild).replace("$GPUSCRIPT", $scope.gpuScript).replace("$OFILEFORMAT", $scope.outputFileFormat).replace("$START", i).replace("$END", endFrame).replace("$STEP", 1).replace("$INLINESCRIPT", inlineScript).split('$SCENE').join($scope.scene);
+				var cmd;
+				if ($scope.isSamplingOverride == true) {
+					cmd = $scope.workTemplate.replace("$INLINESCRIPT", inlineScript);
+				} else {
+					cmd = $scope.workTemplate.replace("$INLINESCRIPT", "");
+				}
+                cmd = cmd.replace("$BLENDERVERSION", $scope.blenderBuild).replace("$GPUSCRIPT", $scope.gpuScript).replace("$OFILEFORMAT", $scope.outputFileFormat).replace("$START", i).replace("$END", endFrame).replace("$STEP", 1).split('$SCENE').join($scope.scene);
                 list.push(cmd);
             }
         }

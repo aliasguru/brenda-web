@@ -62,12 +62,25 @@
 				</span>
 				<input type="text" class="form-control" id="gpuScript" ng-model="gpuScript" />
 			</div>
-			<label for="inlineScript">Sampling and bounce settings</label>
-			<div class="input-group">
-				<span class="input-group-btn">
-					<button class="btn btn-default" type="button" brenda-help="awsSetup/help/scriptHelp.html"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></button>
-				</span>
-				<input type="text" class="form-control" id="inlineScript" ng-model="inlineScript" />
+			<div class="checkbox">
+				<label>
+					<input type="checkbox" ng-model="isSamplingOverride" ng-change="overrideSamples()"> Override Samples
+				</label>
+			</div>
+			<div ng-if="isSamplingOverride">
+				<label for="inlineScript">Sampling and bounce settings</label>
+				<div class="input-group">
+					<span class="input-group-btn">
+						<button class="btn btn-default" type="button" brenda-help="awsSetup/help/scriptHelp.html"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></button>
+					</span>
+					<input type="text" class="form-control" id="inlineScript" ng-model="inlineScript" />
+				</div>
+				<div class="form-inline">
+					<div class="input-group">
+						<label for="sampleCount">squared sample count</label>
+						<input type="number" class="form-control" id="sampleCount" ng-model="sampleCount" required min="1"/>
+					</div>
+				</div>
 			</div>
 		</div>
 		
@@ -84,10 +97,6 @@
 			<div class="input-group">
 				<label for="sceneToRender">scene to render</label>
 				<input type="text" class="form-control" id="sceneToRender" ng-model="scene" />
-			</div>
-			<div class="input-group">
-				<label for="sampleCount">squared sample count</label>
-				<input type="number" class="form-control" id="sampleCount" ng-model="sampleCount" required min="1"/>
 			</div>
 			<div class="input-group">
 				<label>Output File Format</label>
