@@ -67,7 +67,7 @@
 					<input type="checkbox" ng-model="isSamplingOverride" ng-change="overrideSamples()"> Override Samples
 				</label>
 			</div>
-			<div ng-if="isSamplingOverride">
+			<div ng-show="isSamplingOverride">
 				<label for="inlineScript">Sampling and bounce settings</label>
 				<div class="input-group">
 					<span class="input-group-btn">
