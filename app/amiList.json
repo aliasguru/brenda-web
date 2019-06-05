@@ -5,10 +5,10 @@
 			"blenderVersion": "2.79b with GPU support",
 			"region": "us-east-1"
 		},
-		{
-			"ami": "ami-05338684b7b21e3fa",
-			"blenderVersion": "2.80 Beta with GPU support",
-			"region": "us-east-1"
-		}
+    {
+      "ami": "ami-02b52a410ac69f17d",
+      "blenderVersion": "2.80 Beta with GPU support",
+      "region": "us-east-1"
+    }
 	]
 }
