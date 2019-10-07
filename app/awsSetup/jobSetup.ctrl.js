@@ -62,8 +62,9 @@ angular.module('awsSetup')
     	'percentage=100, branched=False, clamping=True, max_bounces=8, transparent_max_bounces=6)';
         
         $scope.blenderBuilds = [
-        	{value: 'currentDev', label:'Current Dev (use this for GPU rendering!)'},
-        	{value: 'blender', label:'Blender Default (currently 2.79)'}
+        	{value: 'currentDev', label:'CurrentDev'},
+        	{value: 'currentStable', label:'CurrentStable'},
+        	{value: 'blender', label:'Blender (for 2.79)'}
         ];
 
 		$scope.renderDevices = [
