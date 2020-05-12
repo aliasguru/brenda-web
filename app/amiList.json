@@ -9,6 +9,11 @@
 			"ami": "ami-0c2b066533e3446ae",
 			"blenderVersion": "2.80 CurrentStable and 2.81 CurrentDev",
 			"region": "us-east-1"
-	    }
+		},
+	    {
+			"ami": "ami-04327fc8f19014ba0",
+			"blenderVersion": "2.83 beta CurrentStable and 2.90 alpha CurrentDev",
+			"region": "us-east-1"
+		}
 	]
 }
