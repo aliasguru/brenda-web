@@ -47,10 +47,10 @@ angular.module('awsSetup')
         ].join('');
 
         $scope.workTemplateFullframe = '$BLENDERVERSION -b *.blend -y ' + 
-        	'--python-expr \"import bpy;$GPUSCRIPT;$INLINESCRIPT\" -S \"$SCENE\" -F $OFILEFORMAT -o \"$OUTDIR/$SCENE_####\" -s $START -e $END -j $STEP -t 0 -a';
+        	'-S \"$SCENE\" --python-expr \"import bpy;$GPUSCRIPT;$INLINESCRIPT\" -F $OFILEFORMAT -o \"$OUTDIR/$SCENE_####\" -s $START -e $END -j $STEP -t 0 -a';
         
         $scope.workTemplateSubframe = '$BLENDERVERSION -b *.blend -y ' + 
-        '--python-expr \"import bpy;$GPUSCRIPT;$INLINESCRIPT\" -S \"$SCENE\" -F $OFILEFORMAT ' +
+        '-S \"$SCENE\" --python-expr \"import bpy;$GPUSCRIPT;$INLINESCRIPT\" -F $OFILEFORMAT ' +
     	'-o \"$OUTDIR/$SCENE_####_x$SF_MIN_Xto$SF_MAX_Xy$SF_MIN_Yto$SF_MAX_Y\" -s $START -e $END -j $STEP -t 0 -a';
         $scope.workTemplate = $scope.workTemplateFullframe;
         $scope.startFrame = 1;
