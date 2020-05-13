@@ -63,8 +63,7 @@ angular.module('awsSetup')
         
         $scope.blenderBuilds = [
         	{value: 'currentDev', label:'CurrentDev'},
-        	{value: 'currentStable', label:'CurrentStable'},
-        	{value: 'blender', label:'Blender (for 2.79)'}
+        	{value: 'currentStable', label:'CurrentStable'}
         ];
 
 		$scope.renderDevices = [
