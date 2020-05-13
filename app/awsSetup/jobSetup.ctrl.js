@@ -88,8 +88,8 @@ angular.module('awsSetup')
 
         $scope.blenderBuild = $scope.blenderBuilds[0].value; //Default to CurrentDev
         $scope.renderDevice = $scope.renderDevices[0].value; //Default to GPU
-        $scope.useAllResource = $scope.useAllResources[0].value; //Default to GPU
-        $scope.tileSize = $scope.tileSizes[1].value; //Default to GPU
+        $scope.useAllResource = $scope.useAllResources[0].value; //Default to using all resources
+        $scope.tileSize = $scope.tileSizes[0].value; //Default to keep tile sizes
 
         $scope.outputFileFormats = [
         	{value: 'MULTILAYER', label:'OpenEXR Multilayer'},
