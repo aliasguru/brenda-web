@@ -57,7 +57,7 @@ angular.module('awsSetup')
         $scope.endFrame = 9;
         
 		$scope.scene = 'Scene';
-		$scope.gpuScript = 'bpy.ops.render.set_gpu(device=\'$DEVICE\',use_all_resources=$USEALLRESOURCES, cpu_tile_size=$TILESIZE)'
+		$scope.gpuScript = 'bpy.ops.render.set_gpu(device=\'$DEVICE\',use_all_resources=$USEALLRESOURCES, tile_size=$TILESIZE)'
         $scope.inlineScript = 'bpy.ops.render.set_sampling(scene=\'ALL\', samples=$SAMPLES, ' + 
     	'percentage=100, branched=False, clamping=True, max_bounces=8, transparent_max_bounces=6)';
         
@@ -77,6 +77,7 @@ angular.module('awsSetup')
         ];
 
 		$scope.tileSizes = [
+        	{value: '0', label:'keep from file'},
         	{value: '16', label:'16'},
         	{value: '32', label:'32'},
         	{value: '64', label:'64'},
