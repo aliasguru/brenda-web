@@ -47,6 +47,12 @@
 			<hr>
 			
 			<div class="form-group">
+				<div class="input-group">
+					<label>Instance Pool</label>
+				<select class="form-control" ng-model="instancePool" onchange="updateTypes">
+						<option ng-repeat="pool in instancePools" value="{{pool.value}}">{{pool.label}}</option>
+					</select>
+				</div>
 				<label>
 					Instance Type
 					<a href brenda-help="awsSetup/help/spotHelp.html"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>

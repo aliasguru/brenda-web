@@ -36,8 +36,17 @@ angular.module('awsSetup')
 		$scope.amiSelect = ami.name;
 	};
 	
+	//determine if CPU or GPU instances shall be shown
+	$scope.instancePools = [
+		{value: 'instances.json', label:'Show CPU instance types'},
+		{value: 'gpu_instances.json', label:'Show GPU instance types'}
+	];
+
+	//set CPU instances as the default
+	$scope.instancePool = $scope.instancePools[1].value;
+
 	$scope.instanceType = 'spot';
-	
+
 	//Get list of instance types to choose from
 	$scope.instances = [];
 	
@@ -74,7 +83,7 @@ angular.module('awsSetup')
 	});
 	
 	$scope.updateTypes = function() {
-		$q.all([$http.get('instances.json'), awsService.getAvailabilityZones()])
+		$q.all([$http.get($scope.instancePool), awsService.getAvailabilityZones()])
 		.then(function(results) {
 			$scope.instances = [];
 
