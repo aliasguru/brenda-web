@@ -33,6 +33,8 @@ angular.module('awsSetup')
         $scope.multiframeModel = {};
         $scope.multiframeModel.multiframes = 2;
 
+		$scope.isSamplingOverride = false;
+
         $scope.subframeScriptTemplate = [
             'cat >subframe.py <<EOF\n',
             'import bpy\n',
@@ -45,27 +47,49 @@ angular.module('awsSetup')
         ].join('');
 
         $scope.workTemplateFullframe = '$BLENDERVERSION -b *.blend -y ' + 
-        	'--python-expr \"import bpy;$INLINESCRIPT\" -S $SCENE -F $OFILEFORMAT -o $OUTDIR/$SCENE_#### -s $START -e $END -j $STEP -t 0 -a';
+        	'-S \"$SCENE\" --python-expr \"import bpy;$GPUSCRIPT;$INLINESCRIPT\" -F $OFILEFORMAT -o \"$OUTDIR/$SCENE_####\" -s $START -e $END -j $STEP -t 0 -a';
         
-        //$scope.workTemplateFullframe = 'blender -b *.blend -F MULTILAYER -y -S YOURSCENEHERE -o $OUTDIR/render_### -s $START -e $END -j $STEP -t 0 -a';
         $scope.workTemplateSubframe = '$BLENDERVERSION -b *.blend -y ' + 
-        '--python-expr \"import bpy;$INLINESCRIPT\" -S $SCENE -F $OFILEFORMAT ' +
-    	'-o $OUTDIR/$SCENE_####_x$SF_MIN_Xto$SF_MAX_Xy$SF_MIN_Yto$SF_MAX_Y -s $START -e $END -j $STEP -t 0 -a';
+        '-S \"$SCENE\" --python-expr \"import bpy;$GPUSCRIPT;$INLINESCRIPT\" -F $OFILEFORMAT ' +
+    	'-o \"$OUTDIR/$SCENE_####_x$SF_MIN_Xto$SF_MAX_Xy$SF_MIN_Yto$SF_MAX_Y\" -s $START -e $END -j $STEP -t 0 -a';
         $scope.workTemplate = $scope.workTemplateFullframe;
         $scope.startFrame = 1;
         $scope.endFrame = 9;
         
-        $scope.scene = 'Scene';
-        $scope.inlineScript = 'bpy.ops.render.set_sampling(scene=\'ALL\', device=\'GPU\', samples=$SAMPLES, ' + 
-    	'percentage=100, branched=False, clamping=True, max_bounces=8, transparent_max_bounces=6,' + 
-    	'cpu_tile_size=32)';
+		$scope.scene = 'Scene';
+		$scope.gpuScript = 'bpy.ops.render.set_gpu(device=\'$DEVICE\',use_all_resources=$USEALLRESOURCES, tile_size=$TILESIZE)'
+        $scope.inlineScript = 'bpy.ops.render.set_sampling(scene=\'ALL\', samples=$SAMPLES, ' + 
+    	'percentage=100, branched=False, clamping=True, max_bounces=8, transparent_max_bounces=6)';
         
         $scope.blenderBuilds = [
-        	{value: 'currentDev', label:'Current Dev (use this for GPU rendering!)'},
-        	{value: 'blender', label:'Blender Default (currently 2.79)'}
+        	{value: 'currentDev', label:'CurrentDev'},
+        	{value: 'currentStable', label:'CurrentStable'}
         ];
-        
+
+		$scope.renderDevices = [
+        	{value: 'GPU', label:'Render on GPUs if available'},
+        	{value: 'CPU', label:'Render on CPUs in any case'}
+        ];
+
+		$scope.useAllResources = [
+        	{value: 'True', label:'Use all power available'},
+        	{value: 'False', label:'Use CPU or GPU, but not both'}
+        ];
+
+		$scope.tileSizes = [
+        	{value: '0', label:'keep from file'},
+        	{value: '16', label:'16'},
+        	{value: '32', label:'32'},
+        	{value: '64', label:'64'},
+        	{value: '128', label:'128'},
+        	{value: '256', label:'256'},
+        	{value: '512', label:'512'},
+        ];
+
         $scope.blenderBuild = $scope.blenderBuilds[0].value; //Default to CurrentDev
+        $scope.renderDevice = $scope.renderDevices[0].value; //Default to GPU
+        $scope.useAllResource = $scope.useAllResources[0].value; //Default to using all resources
+        $scope.tileSize = $scope.tileSizes[0].value; //Default to keep tile sizes
 
         $scope.outputFileFormats = [
         	{value: 'MULTILAYER', label:'OpenEXR Multilayer'},
@@ -175,16 +199,23 @@ angular.module('awsSetup')
 		for (var i = parseInt($scope.startFrame, 10); i <= parseInt($scope.endFrame, 10); i=i+multiframeSteps) {
             var parsedSubframeX = parseInt($scope.subframeModel.subframesX, 10);
             var parsedSubframeY = parseInt($scope.subframeModel.subframesY, 10);
-            var inlineScript = $scope.inlineScript.replace("$SAMPLES", $scope.sampleCount);
+			var inlineScript = $scope.inlineScript.replace("$SAMPLES", $scope.sampleCount);
+			var gpuScript = $scope.gpuScript.replace("$DEVICE", $scope.renderDevice).replace("$USEALLRESOURCES", $scope.useAllResource).replace("$TILESIZE", $scope.tileSize);
             if ($scope.isSubframeRender && (parsedSubframeX > 1 || parsedSubframeY > 1)) {
-                var blenderCmd = $scope.workTemplate.replace("$BLENDERVERSION", $scope.blenderBuild).replace("$SCRIPT", $scope.subframeScript).replace("$OFILEFORMAT", $scope.outputFileFormat).replace("$START", i).replace("$END", i).replace("$STEP", 1).replace("$INLINESCRIPT", inlineScript).split('$SCENE').join($scope.scene);
+                var blenderCmd = $scope.workTemplate.replace("$BLENDERVERSION", $scope.blenderBuild).replace("$GPUSCRIPT", gpuScript).replace("$SCRIPT", $scope.subframeScript).replace("$OFILEFORMAT", $scope.outputFileFormat).replace("$START", i).replace("$END", i).replace("$STEP", 1).replace("$INLINESCRIPT", inlineScript).split('$SCENE').join($scope.scene);
                 addSubframeTasksToList(parsedSubframeX, parsedSubframeY, blenderCmd, list);
             } else {
             	var endFrame = i+multiframeSteps-1;
             	if (endFrame > $scope.endFrame){
             		endFrame = $scope.endFrame;
 				}
-                var cmd = $scope.workTemplate.replace("$BLENDERVERSION", $scope.blenderBuild).replace("$OFILEFORMAT", $scope.outputFileFormat).replace("$START", i).replace("$END", endFrame).replace("$STEP", 1).replace("$INLINESCRIPT", inlineScript).split('$SCENE').join($scope.scene);
+				var cmd;
+				if ($scope.isSamplingOverride == true) {
+					cmd = $scope.workTemplate.replace("$INLINESCRIPT", inlineScript);
+				} else {
+					cmd = $scope.workTemplate.replace("$INLINESCRIPT", "");
+				}
+                cmd = cmd.replace("$BLENDERVERSION", $scope.blenderBuild).replace("$GPUSCRIPT", gpuScript).replace("$OFILEFORMAT", $scope.outputFileFormat).replace("$START", i).replace("$END", endFrame).replace("$STEP", 1).split('$SCENE').join($scope.scene);
                 list.push(cmd);
             }
         }
