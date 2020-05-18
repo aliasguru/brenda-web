@@ -49,7 +49,7 @@
 			<div class="form-group">
 				<div class="input-group">
 					<label>Instance Pool</label>
-				<select class="form-control" ng-model="instancePool" onchange="updateTypes">
+				<select class="form-control" ng-model="instancePool" ng-change="updateTypes()">
 						<option ng-repeat="pool in instancePools" value="{{pool.value}}">{{pool.label}}</option>
 					</select>
 				</div>
