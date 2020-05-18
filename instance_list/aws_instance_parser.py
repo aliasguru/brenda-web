@@ -6,8 +6,8 @@ import json
 import pandas as pd
 
 __output_file__ = '../app/instances.json'
-__min_number_of_cores__ = 32
-__gpu_only__ = True
+__gpu_output_file__ = '../app/gpu_instances.json'
+__min_number_of_cores__ = 64
 
 f = open("index.json", "r")
 
@@ -41,18 +41,14 @@ df["location"] = df["location"].map({
 	"Asia Pacific (Tokyo)": "ap-northeast-1", "Canada (Central)": "ca-central-1", "EU (Frankfurt)": "eu-central-1",
 	"EU (Ireland)": "eu-west-1", "EU (London)": "eu-west-2", "South America (Sao Paulo)": "sa-east-1"})
 
-#TODO: filter instance types by  "instanceFamily" : "GPU instance",
-
-if __gpu_only__:
-	_instanceData = df[(df["operatingSystem"] == "Linux")
+_gpu_instanceData = df[(df["operatingSystem"] == "Linux")
 				& (df["location"].notnull())
 				& (df["productFamily"] == "Compute Instance")
 				& (df["instanceFamily"] == "GPU instance")
-				& (df['vcpu'].astype(float) >= __min_number_of_cores__)][["location", "instanceType"]].\
+				& (df['vcpu'].astype(float) >= __min_number_of_cores__/4)][["location", "instanceType"]].\
 				drop_duplicates().to_json(orient = "records")
 
-else:
-	_instanceData = df[(df["operatingSystem"] == "Linux")
+_instanceData = df[(df["operatingSystem"] == "Linux")
 				& (df["location"].notnull())
 				& (df["productFamily"] == "Compute Instance")
 				& ((df['vcpu'].astype(float) >= __min_number_of_cores__)
@@ -62,7 +58,11 @@ else:
 try:
 	_t = open(__output_file__, 'w')
 	_t.write(_instanceData)
-	print('data written to instances.json')
+	print('CPU instance data written to instances.json')
+
+	_t = open(__gpu_output_file__, 'w')
+	_t.write(_gpu_instanceData)
+	print('GPU instance data written to gpu_instances.json')
 
 except Exception as exc:
 	print('Failed to write file:', exc)
