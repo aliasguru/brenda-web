@@ -7,6 +7,7 @@ import pandas as pd
 
 __output_file__ = '../app/instances.json'
 __min_number_of_cores__ = 32
+__gpu_only__ = True
 
 f = open("index.json", "r")
 
@@ -42,8 +43,16 @@ df["location"] = df["location"].map({
 
 #TODO: filter instance types by  "instanceFamily" : "GPU instance",
 
+if __gpu_only__:
+	_instanceData = df[(df["operatingSystem"] == "Linux")
+				& (df["location"].notnull())
+				& (df["productFamily"] == "Compute Instance")
+				& (df["instanceFamily"] == "GPU instance")
+				& (df['vcpu'].astype(float) >= __min_number_of_cores__)][["location", "instanceType"]].\
+				drop_duplicates().to_json(orient = "records")
 
-_instanceData = df[(df["operatingSystem"] == "Linux")
+else:
+	_instanceData = df[(df["operatingSystem"] == "Linux")
 				& (df["location"].notnull())
 				& (df["productFamily"] == "Compute Instance")
 				& ((df['vcpu'].astype(float) >= __min_number_of_cores__)
