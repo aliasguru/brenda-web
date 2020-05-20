@@ -1,7 +1,7 @@
 {
 	"amis": [
 	    {
-			"ami": "ami-04327fc8f19014ba0",
+			"ami": "ami-005d6900ba0ffe9a2",
 			"blenderVersion": "2.83 beta CurrentStable and 2.90 alpha CurrentDev",
 			"region": "us-east-1"
 		}
