@@ -4,6 +4,11 @@
 			"ami": "ami-038e971eaab810527",
 			"blenderVersion": "2.91 CurrentStable and 2.92 alpha CurrentDev",
 			"region": "us-east-1"
+		},
+		{
+			"ami": "ami-041b49045dc78ba81",
+			"blenderVersion": "2.91 CurrentStable and 2.93 alpha CurrentDev, based on Ubuntu 20.04",
+			"region": "us-east-1"
 		}
 	]
 }
